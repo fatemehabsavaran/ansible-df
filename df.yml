@@ -1,0 +1,22 @@
+# ---
+# - hosts: all
+#   tasks:
+#     - name: Get disk usage
+#       shell: df -h / | awk 'NR==2 {print $5}'
+#       register: web_disk_usage
+#     - name: Print disk usage
+#       debug:
+#         msg: "percentage of disk space: {{ web_disk_usage.stdout}}"
+
+---
+- hosts: all
+  tasks:
+    - name: Get disk usage
+      shell: df -h / | awk 'NR==2 {print $5}' | sed 's/%//'
+      register: web_disk_usage
+
+    - name: Print disk usage for hosts with more than 80% disk space
+      debug:
+        msg: "Host {{ inventory_hostname }} is using {{ web_disk_usage.stdout }}% of disk space."
+      when: web_disk_usage.stdout | int > 70
+
