@@ -7,5 +7,3 @@ Add ssh config host name to `hosts`
 ansible-playbook df.yml
 ```
 
-##ScreenShots
-![yml file screenshot](./)
